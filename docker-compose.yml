@@ -1,0 +1,16 @@
+version: "2.0"
+services:
+ build-agent:
+   container_name: build-agent
+   image: zad1:latest
+   build:
+     context: .
+     dockerfile: ./Dockerfile
+ test-agent:
+   container_name: test-agent
+   image: zad1_test:latest
+   build:
+     context: .
+     dockerfile: test/Dockerfile
+   depends_on:
+   - build-agent
