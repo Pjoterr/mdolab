@@ -4,7 +4,7 @@ pipeline {
    stages {
       stage('Build') {
          steps {
-            git branch: 'master', url: 'https://github.com/Pjoterr/blockrain.js.git'
+            git branch: 'master', url: 'https://github.com/Pjoterr/mdolab.git'
             dir('Docker')
             {
                 sh 'docker-compose up build-agent'
