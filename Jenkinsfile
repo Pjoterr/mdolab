@@ -23,7 +23,6 @@ pipeline {
       stage('Test') {
          steps {
             echo 'Testing'
-            git branch: 'master', url: 'https://github.com/Pjoterr/mdolab.git'
             dir('Docker'){
                 sh 'docker-compose up test-agent'
             }
@@ -46,8 +45,7 @@ pipeline {
 
      stage('Deploy'){
        steps{
-          echo 'Deplyoing"
-          git branch: 'master' , url: 'https://github.com/Pjoterr/mdolab.git'
+          echo 'Deplyoing
           dir('Docker'){
            sh 'docker-compose up'
 }
@@ -61,3 +59,4 @@ pipeline {
           }
        }
      }
+   }
