@@ -30,7 +30,7 @@ pipeline {
          post {
            failure {
            mail to:'qsypr1997@gmail.com',
-           subjecct: "Failed Test stage",
+           subject: "Failed Test stage",
            body: "Test did not pass"
            echo 'Test failded'
            }
