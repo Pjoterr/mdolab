@@ -29,7 +29,7 @@ pipeline {
            }
          post {
            failure {
-           mail to:qsypr1997@gmail.com',
+           mail to:'qsypr1997@gmail.com',
            subjecct: "Failed Test stage",
            body: "Test did not pass"
            echo 'Test failded'
@@ -45,7 +45,7 @@ pipeline {
 
      stage('Deploy'){
        steps{
-          echo 'Deplyoing
+          echo 'Deplyoing'
           dir('Docker'){
            sh 'docker-compose up'
 }
