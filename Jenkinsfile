@@ -4,7 +4,9 @@ pipeline {
         stage('Build') {
             steps {
                 git branch: 'main', url: 'https://github.com/Pjoterr/mdolab'
-                sh 'apt-get install npm'
+                sh 'apt-get update -y'
+                sh 'apt-get upgrade -y'
+                sh 'apt-get install npm -y'
                 sh 'npm install'
                 sh 'git pull origin main'
             }
