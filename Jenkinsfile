@@ -54,6 +54,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
+                echo 'Deploying....'
                 }
                 post {
                     failure {
