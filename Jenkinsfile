@@ -1,62 +1,73 @@
 pipeline {
-   agent any
-	
-   stages {
-      stage('Build') {
-         steps {
-            git branch: 'master', url: 'https://github.com/Pjoterr/mdolab.git'
-            dir('Docker')
-            {
-                sh 'docker-compose up build-agent'
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Pjoterr/mdolab'
+                sh 'npm install'
+                sh 'git pull origin master'
             }
-           }
-              post
-              {
-                 failure{
-                 echo 'Build failed'
-                 }
-                 success{
-                 echo 'Build completed'
-                 }
-               }
-          }
-      stage('Test') {
-         steps {
-            echo 'Testing'
-            dir('Docker'){
-                sh 'docker-compose up test-agent'
-            }
-           }
-         post {
-           failure {
-           mail to:'qsypr1997@gmail.com',
-           subject: "Failed Test stage",
-           body: "Test did not pass"
-           echo 'Test failded'
-           }
-           success{
-           mail to: 'qsypr1997@gmail.com',
-           subject: "Success test",
-           body: "Succes Testing"
-           echo 'Test complete'
-           }
-         }
-      }
+            
+            post {
+                failure {
+                    script {
+                        env.FAILED = true
+                    }  
 
-     stage('Deploy'){
-       steps{
-          echo 'Deplyoing'
-          dir('Docker'){
-           sh 'docker-compose up'
+                    emailext attachLog: true,
+                        to:'qsypr1997@gmail.com',
+                        subject: "Build failed: ${currentBuild.fullDisplayName}",
+                        body: "error ${env.BUILD_URL}"     
+                      
+                }
+                success {
+                    mail to: 'qsypr1997@gmail.com',
+                        subject: "Build success! ${currentBuild.fullDisplayName}",
+                        body: "Build success!"
+                }
+            }
+        }
+        stage('Test') {
+             steps {
+                 script {
+                    if ( env.FAILED ) {
+                    expression {
+                        currentBuild.result = 'ABORTED'
+                        error('Failed on build stage!')
+                        }
+                    }
+                }
+            }
+            post {
+                failure {
+                    emailext attachLog: true,
+                        to:''qsypr1997@gmail.com',
+                        subject: "Failed on test stage: ${currentBuild.fullDisplayName}",
+                        body: "Error ${env.BUILD_URL}"        
+                }
+                success {
+                    mail to: 'qsypr1997@gmail.com',
+                        subject: "Success on testing ${currentBuild.fullDisplayName}",
+                        body: "Success on testing ${env.BUILD_URL} "    
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                }
+                post {
+                    failure {
+                         emailext attachLog: true,
+                            to:''qsypr1997@gmail.com',
+                            subject: "Failed: ${currentBuild.fullDisplayName}",
+                            body: "error ${env.BUILD_URL}"        
+                    }
+                    success {
+                        mail to: 'qsypr1997@gmail.com',
+                            subject: "Success: ${currentBuild.fullDisplayName}",
+                            body: "Success deploy ${env.BUILD_URL} "                        
+                    }
+                }
+        }
+    }
 }
-         } 
-       post {
-          failure {
-              echo 'Deploy failure'
-          }
-          success {
-              echo 'Deploy complete'
-          }
-       }
-     }
-   }
