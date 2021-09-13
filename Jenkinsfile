@@ -5,7 +5,7 @@ pipeline {
             steps {
                 git branch: 'main', url: 'https://github.com/Pjoterr/mdolab'
                 sh 'npm install'
-                sh 'git pull origin master'
+                sh 'git pull origin main'
             }
             
             post {
