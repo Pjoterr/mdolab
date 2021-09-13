@@ -41,7 +41,7 @@ pipeline {
             post {
                 failure {
                     emailext attachLog: true,
-                        to:''qsypr1997@gmail.com',
+                        to:'qsypr1997@gmail.com',
                         subject: "Failed on test stage: ${currentBuild.fullDisplayName}",
                         body: "Error ${env.BUILD_URL}"        
                 }
