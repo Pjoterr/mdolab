@@ -58,7 +58,7 @@ pipeline {
                 post {
                     failure {
                          emailext attachLog: true,
-                            to:''qsypr1997@gmail.com',
+                            to:'qsypr1997@gmail.com',
                             subject: "Failed: ${currentBuild.fullDisplayName}",
                             body: "error ${env.BUILD_URL}"        
                     }
