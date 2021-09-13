@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                git branch: 'master', url: 'https://github.com/Pjoterr/mdolab'
+                git branch: 'main', url: 'https://github.com/Pjoterr/mdolab'
                 sh 'npm install'
                 sh 'git pull origin master'
             }
